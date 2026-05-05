@@ -8,16 +8,37 @@
         @new-user="openNewUser"
       />
       <template v-if="currentSection === 'Usuarios'">
-        <StatsCards />
+        <StatsCards :stats="stats" />
         <UsersTable
           :users="users"
           :search="search"
-          @view-user="selected = $event"
+          @view-user="openUser"
+          @edit-user="openEditUser"
+          @delete-user="deleteUser"
         />
       </template>
-      <SectionPlaceholder v-else :title="currentSection" />
+      <OverviewPanel
+        v-else-if="currentSection === 'Overview'"
+        :users="users"
+        :stats="stats"
+      />
+      <AnalyticsPanel
+        v-else-if="currentSection === 'Analytics'"
+        :users="users"
+        :stats="stats"
+      />
+      <ProjectsPanel v-else-if="currentSection === 'Proyectos'" />
+      <MessagesPanel v-else-if="currentSection === 'Mensajes'" />
     </main>
-    <UserModal v-if="selected" :user="selected" @close="selected = null" />
+    <UserModal
+      v-if="modalState"
+      :mode="modalState.mode"
+      :user="modalState.user"
+      @close="closeModal"
+      @save="saveUser"
+      @edit="openEditUser"
+      @delete="deleteUser"
+    />
   </div>
 </template>
 
@@ -28,23 +49,69 @@ import TopBar from './components/TopBar.vue';
 import StatsCards from './components/StatsCards.vue';
 import UsersTable from './components/UsersTable.vue';
 import UserModal from './components/UserModal.vue';
-import SectionPlaceholder from './components/SectionPlaceholder.vue';
-import { users } from './data/users.js';
+import { createBlankUser, useUsersStore } from './composables/useUsersStore.js';
+import OverviewPanel from './components/views/OverviewPanel.vue';
+import AnalyticsPanel from './components/views/AnalyticsPanel.vue';
+import ProjectsPanel from './components/views/ProjectsPanel.vue';
+import MessagesPanel from './components/views/MessagesPanel.vue';
+
+const { users, stats, saveUser: persistUser, deleteUserById } = useUsersStore();
 
 const currentSection = ref('Usuarios');
 const search = ref('');
-const selected = ref(null);
+const modalState = ref(null);
 
 const setSection = (section) => {
   currentSection.value = section;
   search.value = '';
-  selected.value = null;
+  modalState.value = null;
 };
 
 const openNewUser = () => {
   if (currentSection.value !== 'Usuarios') {
     return;
   }
+
+  modalState.value = {
+    mode: 'create',
+    user: createBlankUser(),
+  };
+};
+
+const openUser = (user) => {
+  modalState.value = {
+    mode: 'view',
+    user: { ...user },
+  };
+};
+
+const openEditUser = (user) => {
+  modalState.value = {
+    mode: 'edit',
+    user: { ...user },
+  };
+};
+
+const closeModal = () => {
+  modalState.value = null;
+};
+
+const saveUser = (payload) => {
+  persistUser(payload, modalState.value?.mode ?? 'edit');
+  closeModal();
+};
+
+const deleteUser = (user) => {
+  const confirmed = window.confirm(
+    `¿Eliminar a ${user.name}? Esta acción no se puede deshacer.`,
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  deleteUserById(user.id);
+  closeModal();
 };
 </script>
 

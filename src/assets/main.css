@@ -16,8 +16,15 @@
     --accent3: #1ea995;
     --text: #243244;
     --muted: #5f6d80;
-    --font-head: 'Syne', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
+    --font-head: 'Space Grotesk', sans-serif;
+    --font-body: 'Manrope', sans-serif;
+}
+
+html {
+    color-scheme: light;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -25,6 +32,8 @@ body {
     color: var(--text);
     font-family: var(--font-body);
     min-height: 100vh;
+    line-height: 1.5;
+    font-size: 15px;
 }
 
 ::-webkit-scrollbar {
