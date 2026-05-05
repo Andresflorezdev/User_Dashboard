@@ -42,7 +42,6 @@ const subtitle = computed(() => {
     Analytics: 'Métricas y tendencias',
     Proyectos: 'Seguimiento de iniciativas',
     Mensajes: 'Conversaciones y notificaciones',
-    Ajustes: 'Configuración del sistema',
   };
 
   return map[props.section] ?? 'Panel de administración';
