@@ -44,7 +44,6 @@ const nav = [
   { icon: '◈', label: 'Analytics' },
   { icon: '◇', label: 'Proyectos' },
   { icon: '○', label: 'Mensajes' },
-  { icon: '◻', label: 'Ajustes' },
 ];
 </script>
 
