@@ -27,6 +27,11 @@
           </tr>
         </thead>
         <tbody>
+          <tr v-if="!filtered.length" class="empty-row">
+            <td colspan="6">
+              No hay usuarios que coincidan con el filtro actual.
+            </td>
+          </tr>
           <tr v-for="u in filtered" :key="u.id" class="row">
             <td>
               <div class="user-cell">
@@ -52,9 +57,20 @@
             <td class="revenue">${{ u.revenue.toLocaleString() }}</td>
             <td class="date">{{ formatDate(u.joined) }}</td>
             <td>
-              <button class="action-btn" @click="$emit('view-user', u)">
-                Ver
-              </button>
+              <div class="action-group">
+                <button class="action-btn" @click="$emit('view-user', u)">
+                  Ver
+                </button>
+                <button class="action-btn" @click="$emit('edit-user', u)">
+                  Editar
+                </button>
+                <button
+                  class="action-btn danger"
+                  @click="$emit('delete-user', u)"
+                >
+                  Eliminar
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -66,7 +82,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 const props = defineProps(['users', 'search']);
-defineEmits(['view-user']);
+defineEmits(['view-user', 'edit-user', 'delete-user']);
 
 const filters = ['Todos', 'Activo', 'Inactivo', 'Pendiente'];
 const active = ref('Todos');
@@ -166,6 +182,11 @@ th {
 .row:hover {
   background: #dbe3f1;
 }
+.empty-row td {
+  padding: 28px 20px;
+  text-align: center;
+  color: var(--muted);
+}
 td {
   padding: 14px 20px;
   font-size: 0.88rem;
@@ -257,5 +278,14 @@ td {
 .action-btn:hover {
   border-color: var(--accent);
   color: var(--accent);
+}
+.action-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.action-btn.danger:hover {
+  border-color: #d95a6f;
+  color: #d95a6f;
 }
 </style>
