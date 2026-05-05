@@ -1,7 +1,7 @@
 <template>
   <aside class="sidebar">
     <div class="logo">
-      <span class="logo-icon">◈</span>
+      <span class="logo-icon">💼</span>
       <span class="logo-text">DASHBOARD</span>
     </div>
     <nav>
@@ -39,11 +39,11 @@ defineProps({
 defineEmits(['change-section']);
 
 const nav = [
-  { icon: '⬡', label: 'Overview' },
-  { icon: '◉', label: 'Usuarios' },
-  { icon: '◈', label: 'Analytics' },
-  { icon: '◇', label: 'Proyectos' },
-  { icon: '○', label: 'Mensajes' },
+  { icon: '📊', label: 'Overview' },
+  { icon: '👥', label: 'Usuarios' },
+  { icon: '📈', label: 'Analytics' },
+  { icon: '📋', label: 'Proyectos' },
+  { icon: '💬', label: 'Mensajes' },
 ];
 </script>
 
@@ -127,7 +127,7 @@ nav {
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
   display: grid;
   place-items: center;
   font-size: 0.72rem;
